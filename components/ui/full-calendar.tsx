@@ -76,19 +76,19 @@ type ContextType = {
   setView: (view: View) => void;
   date: Date;
   setDate: (date: Date) => void;
-  events: Event[];
+  events: CalendarEvent[];
   locale: Locale;
-  setEvents: (date: Event[]) => void;
-  addEvent: (date: Event) => void;
+  setEvents: (date: CalendarEvent[]) => void;
+  addEvent: (date: CalendarEvent) => void;
   removeEvent: (id: string) => void;
-  onEventClick?: (event: Event) => void;
+  onEventClick?: (event: CalendarEvent) => void;
   enableHotkeys?: boolean;
   today: Date;
 };
 
 const Context = createContext<ContextType>({} as ContextType);
 
-type Event = {
+export type CalendarEvent = {
   id: string;
   start: Date;
   end: Date;
@@ -99,10 +99,10 @@ type Event = {
 type CalendarProps = {
   children: ReactNode;
   defaultDate?: Date;
-  events?: Event[];
+  events?: CalendarEvent[];
   locale?: Locale;
   enableHotkeys?: boolean;
-  onEventClick?: (event: Event) => void;
+  onEventClick?: (event: CalendarEvent) => void;
 };
 
 const Calendar = ({
@@ -118,11 +118,11 @@ const Calendar = ({
     (searchParams.get('view') as View) || 'month'
   );
   const [date, setDate] = useState(defaultDate);
-  const [events, setEvents] = useState<Event[]>(defaultEvents);
-  const router = useRouter();
+  const [events, setEvents] = useState<CalendarEvent[]>(defaultEvents);
+  const { replace } = useRouter();
   const pathname = usePathname();
 
-  const addEvent = useCallback((event: Event) => {
+  const addEvent = useCallback((event: CalendarEvent) => {
     setEvents((prev) => [...prev, event]);
   }, []);
 
@@ -133,8 +133,8 @@ const Calendar = ({
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
     params.set('view', view);
-    router.replace(`${pathname}?${params.toString()}`);
-  }, [view, searchParams, router, pathname]);
+    replace(`${pathname}?${params.toString()}`);
+  }, [view, searchParams, replace, pathname]);
 
   useHotkeys('m', () => setView('month'), {
     enabled: enableHotkeys,
@@ -198,7 +198,13 @@ const CalendarViewTrigger = forwardRef<
 });
 CalendarViewTrigger.displayName = 'CalendarViewTrigger';
 
-const EventGroup = ({ events, hour }: { events: Event[]; hour: Date }) => {
+const EventGroup = ({
+  events,
+  hour,
+}: {
+  events: CalendarEvent[];
+  hour: Date;
+}) => {
   return (
     <div className="h-20 border-t last:border-b">
       {events
