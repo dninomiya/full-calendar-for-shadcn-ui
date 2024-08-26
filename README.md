@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Full Calendar for shadcn/ui
+
+- Keyboard shortcuts
+- View modes: day, week, month, year
+- shadcn/ui base
+- non Package
 
 ## Getting Started
 
-First, run the development server:
+Install the dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm add date-fns react-hotkeys-hook
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Copy the [components/ui/full-calendar.tsx](components/ui/full-calendar.tsx) to your project.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```tsx
+<Calendar
+  events={[
+    {
+      id: '1',
+      start: new Date('2024-08-26T09:30:00Z'),
+      end: new Date('2024-08-26T14:30:00Z'),
+      title: 'event A',
+      color: 'pink',
+    },
+    {
+      id: '2',
+      start: new Date('2024-08-26T10:00:00Z'),
+      end: new Date('2024-08-26T10:30:00Z'),
+      title: 'event B',
+      color: 'blue',
+    },
+  ]}
+>
+  <div className="h-dvh py-6 flex flex-col">
+    <div className="flex px-6 items-center gap-2 mb-6">
+      <CalendarViewTrigger className="aria-[current=true]:bg-accent" view="day">
+        Day
+      </CalendarViewTrigger>
+      <CalendarViewTrigger
+        view="week"
+        className="aria-[current=true]:bg-accent"
+      >
+        Week
+      </CalendarViewTrigger>
+      <CalendarViewTrigger
+        view="month"
+        className="aria-[current=true]:bg-accent"
+      >
+        Month
+      </CalendarViewTrigger>
+      <CalendarViewTrigger
+        view="year"
+        className="aria-[current=true]:bg-accent"
+      >
+        Year
+      </CalendarViewTrigger>
 
-## Learn More
+      <span className="flex-1" />
 
-To learn more about Next.js, take a look at the following resources:
+      <CalendarCurrentDate />
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+      <CalendarPrevTrigger>
+        <ChevronLeft size={20} />
+        <span className="sr-only">Previous</span>
+      </CalendarPrevTrigger>
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+      <CalendarTodayTrigger>Today</CalendarTodayTrigger>
 
-## Deploy on Vercel
+      <CalendarNextTrigger>
+        <ChevronRight size={20} />
+        <span className="sr-only">Next</span>
+      </CalendarNextTrigger>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+      <ModeToggle />
+    </div>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    <div className="flex-1 overflow-auto px-6 relative">
+      <CalendarDayView />
+      <CalendarWeekView />
+      <CalendarMonthView />
+      <CalendarYearView />
+    </div>
+  </div>
+</Calendar>
+```
