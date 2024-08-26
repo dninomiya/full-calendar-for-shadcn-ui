@@ -79,8 +79,6 @@ type ContextType = {
   events: CalendarEvent[];
   locale: Locale;
   setEvents: (date: CalendarEvent[]) => void;
-  addEvent: (date: CalendarEvent) => void;
-  removeEvent: (id: string) => void;
   onEventClick?: (event: CalendarEvent) => void;
   enableHotkeys?: boolean;
   today: Date;
@@ -122,14 +120,6 @@ const Calendar = ({
   const { replace } = useRouter();
   const pathname = usePathname();
 
-  const addEvent = useCallback((event: CalendarEvent) => {
-    setEvents((prev) => [...prev, event]);
-  }, []);
-
-  const removeEvent = useCallback((id: string) => {
-    setEvents((prev) => prev.filter((event) => event.id !== id));
-  }, []);
-
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
     params.set('view', view);
@@ -161,9 +151,7 @@ const Calendar = ({
         setDate,
         events,
         setEvents,
-        addEvent,
         locale,
-        removeEvent,
         enableHotkeys,
         onEventClick,
         today: new Date(),
