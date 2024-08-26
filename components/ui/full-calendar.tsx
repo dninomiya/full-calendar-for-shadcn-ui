@@ -120,25 +120,26 @@ const Calendar = ({
   const { replace } = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
+  const changeView = (view: View) => {
+    setView(view);
     const params = new URLSearchParams(searchParams);
     params.set('view', view);
     replace(`${pathname}?${params.toString()}`);
-  }, [view, searchParams, replace, pathname]);
+  };
 
-  useHotkeys('m', () => setView('month'), {
+  useHotkeys('m', () => changeView('month'), {
     enabled: enableHotkeys,
   });
 
-  useHotkeys('w', () => setView('week'), {
+  useHotkeys('w', () => changeView('week'), {
     enabled: enableHotkeys,
   });
 
-  useHotkeys('y', () => setView('year'), {
+  useHotkeys('y', () => changeView('year'), {
     enabled: enableHotkeys,
   });
 
-  useHotkeys('d', () => setView('day'), {
+  useHotkeys('d', () => changeView('day'), {
     enabled: enableHotkeys,
   });
 
