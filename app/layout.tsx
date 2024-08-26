@@ -1,9 +1,8 @@
+import GithubLink from '@/components/github-link';
+import { ThemeProvider } from '@/components/theme-provider';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { ThemeProvider } from '@/components/theme-provider';
-import GithubLink from '@/components/github-link';
-import { Suspense } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,7 +25,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Suspense>{children}</Suspense>
+          {children}
         </ThemeProvider>
         <GithubLink href="https://github.com/dninomiya/full-calendar-for-shadcn-ui" />
       </body>
