@@ -5,6 +5,8 @@
 - shadcn/ui base
 - non Package
 
+![image](app/opengraph-image.png)
+
 ## Getting Started
 
 Install the dependencies:
