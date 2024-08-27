@@ -98,6 +98,7 @@ type CalendarProps = {
   children: ReactNode;
   defaultDate?: Date;
   events?: CalendarEvent[];
+  mode?: View;
   locale?: Locale;
   enableHotkeys?: boolean;
   onEventClick?: (event: CalendarEvent) => void;
@@ -108,12 +109,13 @@ const Calendar = ({
   defaultDate = new Date(),
   locale = enUS,
   enableHotkeys = true,
+  mode: _defaultMode = 'month',
   onEventClick,
   events: defaultEvents = [],
 }: CalendarProps) => {
   const searchParams = useSearchParams();
   const [view, setView] = useState<View>(
-    (searchParams.get('view') as View) || 'month'
+    (searchParams.get('view') as View) || _defaultMode
   );
   const [date, setDate] = useState(defaultDate);
   const [events, setEvents] = useState<CalendarEvent[]>(defaultEvents);
