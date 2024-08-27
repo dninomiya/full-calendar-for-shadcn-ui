@@ -7,6 +7,9 @@
 
 ![image](app/opengraph-image.png)
 
+- [Full Demo](https://dninomiya.github.io/full-calendar-for-shadcn-ui)
+- [Day Only Demo](https://dninomiya.github.io/full-calendar-for-shadcn-ui/day) / [Code](app/day/page.tsx)
+
 ## Getting Started
 
 Install the dependencies:
