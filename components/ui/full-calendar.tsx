@@ -26,7 +26,6 @@ import {
   subYears,
 } from 'date-fns';
 import { enUS } from 'date-fns/locale/en-US';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
   ReactNode,
   createContext,
@@ -78,6 +77,7 @@ type ContextType = {
   events: CalendarEvent[];
   locale: Locale;
   setEvents: (date: CalendarEvent[]) => void;
+  onChangeView?: (view: View) => void;
   onEventClick?: (event: CalendarEvent) => void;
   enableHotkeys?: boolean;
   today: Date;
@@ -97,9 +97,10 @@ type CalendarProps = {
   children: ReactNode;
   defaultDate?: Date;
   events?: CalendarEvent[];
-  mode?: View;
+  view?: View;
   locale?: Locale;
   enableHotkeys?: boolean;
+  onChangeView?: (view: View) => void;
   onEventClick?: (event: CalendarEvent) => void;
 };
 
@@ -108,21 +109,18 @@ const Calendar = ({
   defaultDate = new Date(),
   locale = enUS,
   enableHotkeys = true,
-  mode: _defaultMode = 'month',
+  view: _defaultMode = 'month',
   onEventClick,
   events: defaultEvents = [],
+  onChangeView,
 }: CalendarProps) => {
-  const searchParams = useSearchParams();
-  const [view, setView] = useState<View>(
-    (searchParams.get('view') as View) || _defaultMode
-  );
+  const [view, setView] = useState<View>(_defaultMode);
   const [date, setDate] = useState(defaultDate);
   const [events, setEvents] = useState<CalendarEvent[]>(defaultEvents);
-  const updateViewParams = useUpdateViewParams();
 
   const changeView = (view: View) => {
     setView(view);
-    updateViewParams(view);
+    onChangeView?.(view);
   };
 
   useHotkeys('m', () => changeView('month'), {
@@ -153,6 +151,7 @@ const Calendar = ({
         locale,
         enableHotkeys,
         onEventClick,
+        onChangeView,
         today: new Date(),
       }}
     >
@@ -169,8 +168,7 @@ const CalendarViewTrigger = forwardRef<
     view: View;
   }
 >(({ children, view, ...props }) => {
-  const { view: currentView, setView } = useCalendar();
-  const updateViewParams = useUpdateViewParams();
+  const { view: currentView, setView, onChangeView } = useCalendar();
 
   return (
     <Button
@@ -180,7 +178,7 @@ const CalendarViewTrigger = forwardRef<
       {...props}
       onClick={() => {
         setView(view);
-        updateViewParams(view);
+        onChangeView?.(view);
       }}
     >
       {children}
@@ -648,21 +646,4 @@ export {
   CalendarViewTrigger,
   CalendarWeekView,
   CalendarYearView,
-};
-
-const useUpdateViewParams = () => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const updateSearchParams = useCallback(
-    (value: View) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set('view', value);
-      router.replace(pathname + '?' + params.toString());
-    },
-    [pathname, router, searchParams]
-  );
-
-  return updateSearchParams;
 };
