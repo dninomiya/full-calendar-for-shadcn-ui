@@ -417,7 +417,7 @@ const CalendarYearView = () => {
   if (view !== 'year') return null;
 
   return (
-    <div className="grid grid-cols-4 gap-10">
+    <div className="grid grid-cols-4 gap-10 overflow-auto h-full">
       {months.map((days, i) => (
         <div key={days[0].toString()}>
           <span className="text-xl">{i + 1}</span>
