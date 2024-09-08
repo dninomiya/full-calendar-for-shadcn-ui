@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { cva, VariantProps } from 'class-variance-authority';
+import { VariantProps, cva } from 'class-variance-authority';
 import {
   Locale,
   addDays,
@@ -33,7 +33,6 @@ import {
   forwardRef,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -119,14 +118,11 @@ const Calendar = ({
   );
   const [date, setDate] = useState(defaultDate);
   const [events, setEvents] = useState<CalendarEvent[]>(defaultEvents);
-  const { replace } = useRouter();
-  const pathname = usePathname();
+  const updateViewParams = useUpdateViewParams();
 
   const changeView = (view: View) => {
     setView(view);
-    const params = new URLSearchParams(searchParams);
-    params.set('view', view);
-    replace(`${pathname}?${params.toString()}`);
+    updateViewParams(view);
   };
 
   useHotkeys('m', () => changeView('month'), {
@@ -174,6 +170,7 @@ const CalendarViewTrigger = forwardRef<
   }
 >(({ children, view, ...props }) => {
   const { view: currentView, setView } = useCalendar();
+  const updateViewParams = useUpdateViewParams();
 
   return (
     <Button
@@ -181,7 +178,10 @@ const CalendarViewTrigger = forwardRef<
       size="sm"
       variant="ghost"
       {...props}
-      onClick={() => setView(view)}
+      onClick={() => {
+        setView(view);
+        updateViewParams(view);
+      }}
     >
       {children}
     </Button>
@@ -593,7 +593,7 @@ const TimeTable = () => {
           >
             {now.getHours() === hour && (
               <div
-                className="absolute z-10 left-full translate-x-2 w-dvw h-[2px] bg-red-500"
+                className="absolute z- left-full translate-x-2 w-dvw h-[2px] bg-red-500"
                 style={{
                   top: `${(now.getMinutes() / 60) * 100}%`,
                 }}
@@ -648,4 +648,21 @@ export {
   CalendarViewTrigger,
   CalendarWeekView,
   CalendarYearView,
+};
+
+const useUpdateViewParams = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const updateSearchParams = useCallback(
+    (value: View) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('view', value);
+      router.replace(pathname + '?' + params.toString());
+    },
+    [pathname, router, searchParams]
+  );
+
+  return updateSearchParams;
 };
