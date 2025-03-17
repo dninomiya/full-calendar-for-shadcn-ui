@@ -1,4 +1,4 @@
-import { ModeToggle } from '@/components/theme-toggle';
+import { ModeToggle } from "@/components/theme-toggle"
 import {
   Calendar,
   CalendarCurrentDate,
@@ -10,27 +10,37 @@ import {
   CalendarViewTrigger,
   CalendarWeekView,
   CalendarYearView,
-} from '@/components/ui/full-calendar';
-import { addHours } from 'date-fns';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+} from "@/components/ui/full-calendar"
+import { addHours } from "date-fns"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 export default function Page() {
   return (
     <Calendar
       events={[
         {
-          id: '1',
+          id: "1",
           start: new Date(),
           end: addHours(new Date(), 2),
-          title: 'event A',
-          color: 'pink',
+          title: "event A",
+          color: "pink",
         },
         {
-          id: '2',
+          id: "2",
           start: addHours(new Date(), 1.5),
           end: addHours(new Date(), 3),
-          title: 'event B',
-          color: 'blue',
+          title: "event B",
+          color: "blue",
+        },
+        {
+          id: "3",
+          fullDate: new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            new Date().getDay() + 1,
+          ),
+          title: "Full Day Event",
+          color: "green",
         },
       ]}
     >
@@ -88,5 +98,5 @@ export default function Page() {
         </div>
       </div>
     </Calendar>
-  );
+  )
 }
