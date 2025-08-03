@@ -52,7 +52,7 @@ const monthEventVariants = cva('size-2 rounded-full', {
   },
 });
 
-const dayEventVariants = cva('font-bold border-l-4 rounded p-2 text-xs', {
+const dayEventVariants = cva('font-bold border-l-4 rounded p-1 md:p-2 text-xs', {
   variants: {
     variant: {
       default: 'bg-muted/30 text-muted-foreground border-muted',
@@ -281,7 +281,7 @@ const CalendarWeekView = () => {
               [0, 6].includes(i) && 'text-muted-foreground/50'
             )}
           >
-            {format(date, 'E', { locale })}
+            {format(date, 'EEEEEE', { locale })}
             <span
               className={cn(
                 'h-6 grid place-content-center',
@@ -339,7 +339,7 @@ const CalendarMonthView = () => {
           <div
             key={day}
             className={cn(
-              'mb-2 text-right text-sm text-muted-foreground pr-2',
+              'mb-2 text-right text-sm text-muted-foreground pr-1 md:pr-2',
               [0, 6].includes(i) && 'text-muted-foreground/50'
             )}
           >
@@ -356,7 +356,7 @@ const CalendarMonthView = () => {
           return (
             <div
               className={cn(
-                'ring-1 p-2 text-sm text-muted-foreground ring-border overflow-auto',
+                'ring-1 p-1 md:p-2 text-sm text-muted-foreground ring-border overflow-auto',
                 !isSameMonth(date, _date) && 'text-muted-foreground/50'
               )}
               key={_date.toString()}
@@ -415,7 +415,7 @@ const CalendarYearView = () => {
   if (view !== 'year') return null;
 
   return (
-    <div className="grid grid-cols-4 gap-10 overflow-auto h-full">
+    <div className="grid grid-cols-1 gap-8 overflow-auto h-full sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {months.map((days, i) => (
         <div key={days[0].toString()}>
           <span className="text-xl">{i + 1}</span>

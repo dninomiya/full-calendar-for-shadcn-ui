@@ -34,8 +34,8 @@ export default function Page() {
         },
       ]}
     >
-      <div className="h-dvh p-14 flex flex-col">
-        <div className="flex px-6 items-center gap-2 mb-6">
+      <div className="flex h-dvh flex-col p-4 sm:p-6 md:p-8 lg:p-14">
+        <div className="mb-6 flex flex-wrap items-center gap-2 px-2 sm:px-4 lg:px-6">
           <CalendarViewTrigger
             className="aria-[current=true]:bg-accent"
             view="day"
@@ -77,10 +77,12 @@ export default function Page() {
             <span className="sr-only">Next</span>
           </CalendarNextTrigger>
 
-          <ModeToggle />
+          <div className="hidden sm:block">
+            <ModeToggle />
+          </div>
         </div>
 
-        <div className="flex-1 px-6 overflow-hidden">
+        <div className="flex-1 overflow-hidden px-2 sm:px-4 lg:px-6">
           <CalendarDayView />
           <CalendarWeekView />
           <CalendarMonthView />
